@@ -332,8 +332,11 @@ function removeItem(index){
 
 function addTransaction(){
 
-    const selectedType = document.getElementById("type").value;
-    const selectedCategory = document.getElementById("category").value;
+    const selectedType =
+        document.getElementById("type").value;
+
+    const selectedCategory =
+        document.getElementById("category").value;
 
     const customerName =
         document.getElementById("name").value.trim();
@@ -344,8 +347,6 @@ function addTransaction(){
     const noteValue =
         document.getElementById("note").value.trim();
 
-
-    /* VALIDASI */
 
     if(!customerName){
 
@@ -367,8 +368,6 @@ function addTransaction(){
     }
 
 
-    /* DATA TRANSAKSI */
-
     const item = {
 
         id: Date.now(),
@@ -377,6 +376,7 @@ function addTransaction(){
 
         category: selectedCategory,
 
+        // NAMA DARI INPUT
         name: customerName,
 
         amount: amountValue,
@@ -388,20 +388,17 @@ function addTransaction(){
     };
 
 
-    /* MASUKKAN DATA */
-
+    // Simpan ke tabel
     data.unshift(item);
 
     save();
 
 
-    /* KIRIM KE DISCORD */
-
+    // Kirim data yang sama ke Discord
     sendDiscord(item);
 
 
-    /* RESET FORM */
-
+    // Bersihkan form
     document.getElementById("name").value = "";
 
     document.getElementById("amount").value = "";
@@ -425,14 +422,18 @@ async function sendDiscord(item){
         return;
     }
 
+    // Ambil nama langsung dari data transaksi
+    const nama = item.name && item.name.trim()
+        ? item.name.trim()
+        : "-";
 
-    const isIncome =
-        item.type === "Pemasukan";
+    const jenis = item.type || "-";
+    const kategori = item.category || "-";
+    const nominal = Number(item.amount) || 0;
+    const keterangan = item.note || "-";
+    const tanggal = item.date || "-";
 
-
-    const embedColor =
-        isIncome ? 5763719 : 15548997;
-
+    const isIncome = jenis === "Pemasukan";
 
     const payload = {
 
@@ -441,49 +442,56 @@ async function sendDiscord(item){
         embeds: [
 
             {
-
                 title: isIncome
                     ? "💰 PEMASUKAN BARU"
                     : "💸 PENGELUARAN BARU",
 
-                color: embedColor,
+                color: isIncome
+                    ? 5763719
+                    : 15548997,
 
                 fields: [
 
                     {
-                        name: "👤 Nama",
-                        value: String(item.name || "-"),
+                        name: "👤 NAMA",
+                        value: `**${nama}**`,
                         inline: true
                     },
 
                     {
-                        name: "📁 Kategori",
-                        value: String(item.category || "-"),
+                        name: "📌 JENIS",
+                        value: jenis,
                         inline: true
                     },
 
                     {
-                        name: "💵 Nominal",
-                        value: rupiah(item.amount),
+                        name: "📁 KATEGORI",
+                        value: kategori,
                         inline: true
                     },
 
                     {
-                        name: "📝 Keterangan",
-                        value: String(item.note || "-"),
+                        name: "💵 NOMINAL",
+                        value: `**${rupiah(nominal)}**`,
+                        inline: true
+                    },
+
+                    {
+                        name: "📝 KETERANGAN",
+                        value: keterangan,
                         inline: false
                     },
 
                     {
-                        name: "📅 Waktu",
-                        value: String(item.date || "-"),
+                        name: "📅 TANGGAL",
+                        value: tanggal,
                         inline: false
                     }
 
                 ],
 
                 footer: {
-                    text: "RK Garage Finance"
+                    text: "RK Garage Finance • Data diambil dari tabel transaksi"
                 },
 
                 timestamp: new Date().toISOString()
@@ -494,39 +502,41 @@ async function sendDiscord(item){
 
     };
 
-
     try{
 
         const response = await fetch(webhook, {
 
-            method:"POST",
+            method: "POST",
 
-            headers:{
-                "Content-Type":"application/json"
+            headers: {
+                "Content-Type": "application/json"
             },
 
-            body:JSON.stringify(payload)
+            body: JSON.stringify(payload)
 
         });
 
-
         if(!response.ok){
+
+            const errorText = await response.text();
 
             console.error(
                 "Discord Error:",
                 response.status,
-                await response.text()
+                errorText
             );
 
             alert(
-                "Data tersimpan, tetapi gagal mengirim ke Discord."
+                "Transaksi tersimpan, tetapi gagal mengirim ke Discord."
             );
 
             return;
         }
 
-
-        console.log("Berhasil dikirim ke Discord.");
+        console.log(
+            "Transaksi berhasil dikirim ke Discord:",
+            nama
+        );
 
     }catch(error){
 
@@ -536,7 +546,7 @@ async function sendDiscord(item){
         );
 
         alert(
-            "Data tersimpan, tetapi Discord tidak dapat dihubungi."
+            "Transaksi tersimpan, tetapi Discord tidak dapat dihubungi."
         );
 
     }
