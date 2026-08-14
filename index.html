@@ -220,7 +220,7 @@ table{font-size:13px;}
 
 <script>
 
-const webhook = "YOUR_DISCORD_WEBHOOK";
+const webhook = "https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-";
 
 let data = JSON.parse(localStorage.getItem("garageFinance")) || [];
 
@@ -416,7 +416,7 @@ async function sendDiscord(item){
 
     if(
         !webhook ||
-        webhook === "YOUR_DISCORD_WEBHOOK"
+        webhook === "https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-"
     ){
         console.warn("Discord Webhook belum diatur.");
         return;
