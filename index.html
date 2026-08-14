@@ -220,120 +220,553 @@ table{font-size:13px;}
 
 <script>
 
-const webhook="https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-";
+const webhook = "YOUR_DISCORD_WEBHOOK";
 
-let data=JSON.parse(localStorage.getItem("garageFinance"))||[];
+let data = JSON.parse(localStorage.getItem("garageFinance")) || [];
+
+/* =========================
+   FORMAT RUPIAH
+========================= */
 
 function rupiah(n){
-return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n);
+    return new Intl.NumberFormat("id-ID", {
+        style:"currency",
+        currency:"IDR",
+        maximumFractionDigits:0
+    }).format(Number(n) || 0);
 }
 
+
+/* =========================
+   SIMPAN DATA
+========================= */
+
 function save(){
-localStorage.setItem("garageFinance",JSON.stringify(data));
-render();
+    localStorage.setItem("garageFinance", JSON.stringify(data));
+    render();
 }
+
+
+/* =========================
+   RENDER DATA
+========================= */
 
 function render(){
 
-const tbody=document.getElementById("history");
-tbody.innerHTML="";
+    const tbody = document.getElementById("history");
 
-let income=0;
-let expense=0;
+    tbody.innerHTML = "";
 
-data.forEach((item,index)=>{
+    let income = 0;
+    let expense = 0;
 
-if(item.type==="Pemasukan") income+=item.amount;
-else expense+=item.amount;
+    data.forEach((item,index)=>{
 
-tbody.innerHTML+=`
-<tr>
-<td>${item.date}</td>
-<td class="${item.type==="Pemasukan"?"income":"expense"}">${item.type}</td>
-<td>${item.category}</td>
-<td>${item.name}</td>
-<td>${rupiah(item.amount)}</td>
-<td><button class="delete" onclick="removeItem(${index})">Hapus</button></td>
-</tr>
-`;
+        const amount = Number(item.amount) || 0;
 
-});
+        if(item.type === "Pemasukan"){
+            income += amount;
+        }else{
+            expense += amount;
+        }
 
-document.getElementById("totalIncome").innerText=rupiah(income);
-document.getElementById("totalExpense").innerText=rupiah(expense);
-document.getElementById("balance").innerText=rupiah(income-expense);
+        tbody.innerHTML += `
+        <tr>
+
+            <td>${item.date || "-"}</td>
+
+            <td class="${item.type === "Pemasukan" ? "income" : "expense"}">
+                ${item.type || "-"}
+            </td>
+
+            <td>${item.category || "-"}</td>
+
+            <td>
+                <strong>${item.name || "-"}</strong>
+            </td>
+
+            <td>
+                ${rupiah(amount)}
+            </td>
+
+            <td>
+                <button class="delete" onclick="removeItem(${index})">
+                    Hapus
+                </button>
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+    document.getElementById("totalIncome").innerText = rupiah(income);
+
+    document.getElementById("totalExpense").innerText = rupiah(expense);
+
+    document.getElementById("balance").innerText = rupiah(income - expense);
+
+}
+
+
+/* =========================
+   HAPUS DATA
+========================= */
+
+function removeItem(index){
+
+    if(!confirm("Hapus transaksi ini?")){
+        return;
+    }
+
+    data.splice(index,1);
+
+    save();
 
 }
 
-function removeItem(i){
-data.splice(i,1);
-save();
-}
 
-async function sendDiscord(item){
-
-if(webhook==="YOUR_DISCORD_WEBHOOK") return;
-
-const color=item.type==="Pemasukan"?5763719:15548997;
-
-await fetch(webhook,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-
-username:"RK Garage Finance",
-
-embeds:[{
-
-title:`💰 ${item.type} Baru`,
-
-color:color,
-
-fields:[
-{name:"Kategori",value:item.category,inline:true},
-{name:"Nama",value:item.name||"-",inline:true},
-{name:"Nominal",value:rupiah(item.amount),inline:true},
-{name:"Keterangan",value:item.note||"-"}
-],
-
-footer:{text:item.date}
-
-}]
-
-})
-});
-
-}
+/* =========================
+   TAMBAH TRANSAKSI
+========================= */
 
 function addTransaction(){
 
-const item={
+    const selectedType = document.getElementById("type").value;
+    const selectedCategory = document.getElementById("category").value;
 
-type:type.value,
-category:category.value,
-name:name.value||"-",
-amount:Number(amount.value),
-note:note.value||"-",
-date:new Date().toLocaleString("id-ID")
+    const customerName =
+        document.getElementById("name").value.trim();
 
-};
+    const amountValue =
+        Number(document.getElementById("amount").value);
 
-if(item.amount<=0){
-alert("Nominal tidak valid.");
-return;
+    const noteValue =
+        document.getElementById("note").value.trim();
+
+
+    /* VALIDASI */
+
+    if(!customerName){
+
+        alert("Nama wajib diisi!");
+
+        document.getElementById("name").focus();
+
+        return;
+    }
+
+
+    if(!amountValue || amountValue <= 0){
+
+        alert("Nominal tidak valid!");
+
+        document.getElementById("amount").focus();
+
+        return;
+    }
+
+
+    /* DATA TRANSAKSI */
+
+    const item = {
+
+        id: Date.now(),
+
+        type: selectedType,
+
+        category: selectedCategory,
+
+        name: customerName,
+
+        amount: amountValue,
+
+        note: noteValue || "-",
+
+        date: new Date().toLocaleString("id-ID")
+
+    };
+
+
+    /* MASUKKAN DATA */
+
+    data.unshift(item);
+
+    save();
+
+
+    /* KIRIM KE DISCORD */
+
+    sendDiscord(item);
+
+
+    /* RESET FORM */
+
+    document.getElementById("name").value = "";
+
+    document.getElementById("amount").value = "";
+
+    document.getElementById("note").value = "";
+
 }
 
-data.unshift(item);
 
-save();
+/* =========================
+   KIRIM TRANSAKSI KE DISCORD
+========================= */
 
-sendDiscord(item);
+async function sendDiscord(item){
 
-name.value="";
-amount.value="";
-note.value="";
+    if(
+        !webhook ||
+        webhook === "YOUR_DISCORD_WEBHOOK"
+    ){
+        console.warn("Discord Webhook belum diatur.");
+        return;
+    }
+
+
+    const isIncome =
+        item.type === "Pemasukan";
+
+
+    const embedColor =
+        isIncome ? 5763719 : 15548997;
+
+
+    const payload = {
+
+        username: "RK Garage Finance",
+
+        embeds: [
+
+            {
+
+                title: isIncome
+                    ? "💰 PEMASUKAN BARU"
+                    : "💸 PENGELUARAN BARU",
+
+                color: embedColor,
+
+                fields: [
+
+                    {
+                        name: "👤 Nama",
+                        value: String(item.name || "-"),
+                        inline: true
+                    },
+
+                    {
+                        name: "📁 Kategori",
+                        value: String(item.category || "-"),
+                        inline: true
+                    },
+
+                    {
+                        name: "💵 Nominal",
+                        value: rupiah(item.amount),
+                        inline: true
+                    },
+
+                    {
+                        name: "📝 Keterangan",
+                        value: String(item.note || "-"),
+                        inline: false
+                    },
+
+                    {
+                        name: "📅 Waktu",
+                        value: String(item.date || "-"),
+                        inline: false
+                    }
+
+                ],
+
+                footer: {
+                    text: "RK Garage Finance"
+                },
+
+                timestamp: new Date().toISOString()
+
+            }
+
+        ]
+
+    };
+
+
+    try{
+
+        const response = await fetch(webhook, {
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify(payload)
+
+        });
+
+
+        if(!response.ok){
+
+            console.error(
+                "Discord Error:",
+                response.status,
+                await response.text()
+            );
+
+            alert(
+                "Data tersimpan, tetapi gagal mengirim ke Discord."
+            );
+
+            return;
+        }
+
+
+        console.log("Berhasil dikirim ke Discord.");
+
+    }catch(error){
+
+        console.error(
+            "Webhook Error:",
+            error
+        );
+
+        alert(
+            "Data tersimpan, tetapi Discord tidak dapat dihubungi."
+        );
+
+    }
 
 }
+
+
+/* =========================
+   KIRIM REKAP KE DISCORD
+========================= */
+
+async function sendRecap(){
+
+    if(
+        !webhook ||
+        webhook === "https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-"
+    ){
+
+        alert("Masukkan Discord Webhook terlebih dahulu.");
+
+        return;
+    }
+
+
+    if(data.length === 0){
+
+        alert("Belum ada transaksi.");
+
+        return;
+    }
+
+
+    let totalIncome = 0;
+    let totalExpense = 0;
+
+
+    let incomeText = "";
+    let expenseText = "";
+
+
+    data.forEach((item,index)=>{
+
+        const amount = Number(item.amount) || 0;
+
+        if(item.type === "Pemasukan"){
+
+            totalIncome += amount;
+
+            incomeText +=
+                `**${index + 1}. ${item.name || "-"}**\n` +
+                `Kategori: ${item.category || "-"}\n` +
+                `Nominal: ${rupiah(amount)}\n` +
+                `Keterangan: ${item.note || "-"}\n\n`;
+
+        }else{
+
+            totalExpense += amount;
+
+            expenseText +=
+                `**${index + 1}. ${item.name || "-"}**\n` +
+                `Kategori: ${item.category || "-"}\n` +
+                `Nominal: ${rupiah(amount)}\n` +
+                `Keterangan: ${item.note || "-"}\n\n`;
+
+        }
+
+    });
+
+
+    const balance =
+        totalIncome - totalExpense;
+
+
+    const embeds = [];
+
+
+    /* REKAP PEMASUKAN */
+
+    if(incomeText){
+
+        embeds.push({
+
+            title:"💰 REKAP PEMASUKAN",
+
+            color:5763719,
+
+            description:incomeText.substring(0,4096),
+
+            fields:[
+
+                {
+                    name:"Total Pemasukan",
+                    value:rupiah(totalIncome),
+                    inline:true
+                }
+
+            ]
+
+        });
+
+    }
+
+
+    /* REKAP PENGELUARAN */
+
+    if(expenseText){
+
+        embeds.push({
+
+            title:"💸 REKAP PENGELUARAN",
+
+            color:15548997,
+
+            description:expenseText.substring(0,4096),
+
+            fields:[
+
+                {
+                    name:"Total Pengeluaran",
+                    value:rupiah(totalExpense),
+                    inline:true
+                }
+
+            ]
+
+        });
+
+    }
+
+
+    /* RINGKASAN */
+
+    embeds.push({
+
+        title:"📊 RINGKASAN KEUANGAN",
+
+        color:10181046,
+
+        fields:[
+
+            {
+                name:"💰 Pemasukan",
+                value:rupiah(totalIncome),
+                inline:true
+            },
+
+            {
+                name:"💸 Pengeluaran",
+                value:rupiah(totalExpense),
+                inline:true
+            },
+
+            {
+                name:"💵 Saldo",
+                value:rupiah(balance),
+                inline:true
+            },
+
+            {
+                name:"📋 Total Transaksi",
+                value:String(data.length),
+                inline:true
+            }
+
+        ],
+
+        footer:{
+            text:"RK Garage Finance"
+        },
+
+        timestamp:new Date().toISOString()
+
+    });
+
+
+    try{
+
+        const response = await fetch(webhook,{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+
+                username:"RK Garage Finance",
+
+                embeds:embeds
+
+            })
+
+        });
+
+
+        if(!response.ok){
+
+            console.error(
+                await response.text()
+            );
+
+            alert(
+                "Gagal mengirim rekap ke Discord."
+            );
+
+            return;
+        }
+
+
+        alert(
+            "Rekap berhasil dikirim ke Discord!"
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Terjadi kesalahan saat mengirim rekap."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   LOAD DATA
+========================= */
 
 render();
 
