@@ -2,342 +2,341 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RK GARAGE • Keuangan</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RK Garage Finance</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+
 body{
-background:linear-gradient(135deg,#12051f,#1d0633,#2d0b45);
-color:#fff;padding:20px;
+background:linear-gradient(135deg,#0b0515,#16092b,#25063f);
+min-height:100vh;
+color:white;
+padding:20px;
 }
-.container{max-width:1200px;margin:auto}
-.title{
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+.header{
 text-align:center;
-font-size:34px;
-font-weight:700;
-margin-bottom:20px;
-background:linear-gradient(90deg,#c084fc,#f472b6);
+margin-bottom:25px;
+}
+
+.header h1{
+font-size:36px;
+background:linear-gradient(90deg,#c084fc,#9333ea,#ec4899);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:rgba(255,255,255,.06);
+backdrop-filter:blur(10px);
+padding:18px;
+border-radius:18px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.card h3{font-size:14px;color:#d8b4fe;}
+.card h2{margin-top:8px;}
+
+.form-box{
+background:rgba(255,255,255,.05);
+padding:22px;
+border-radius:18px;
+margin-bottom:20px;
+}
+
 .grid{
 display:grid;
-grid-template-columns:350px 1fr;
-gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
 }
-.card{
-background:#ffffff10;
-backdrop-filter:blur(10px);
-border:1px solid #ffffff15;
-border-radius:18px;
-padding:18px;
-}
-.card h2{margin-bottom:15px;font-size:20px}
 
-label{
-font-size:13px;
-display:block;
-margin:10px 0 5px;
-color:#ddd;
-}
 input,select,textarea{
 width:100%;
-padding:11px;
-border:none;
-border-radius:10px;
-background:#ffffff12;
-color:#fff;
-outline:none;
-}
-option{color:#000}
-textarea{resize:none;height:80px}
-button{
-width:100%;
 padding:12px;
-margin-top:15px;
 border:none;
-border-radius:12px;
-font-weight:700;
+outline:none;
+border-radius:10px;
+background:#24133d;
+color:white;
+}
+
+textarea{resize:none;}
+
+button{
+border:none;
+padding:13px;
+border-radius:10px;
+font-weight:600;
 cursor:pointer;
 transition:.2s;
 }
-.btn{
+
+.btn-add{
 background:linear-gradient(90deg,#9333ea,#ec4899);
-color:#fff;
+color:white;
 }
-.btn:hover{transform:scale(1.02)}
-.btn-discord{
-background:#5865F2;
-color:#fff;
+
+.btn-add:hover{transform:scale(1.03);}
+
+.table-box{
+background:rgba(255,255,255,.05);
+border-radius:18px;
+overflow:hidden;
 }
-.summary{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-margin-bottom:18px;
-}
-.box{
-padding:15px;
-border-radius:14px;
-text-align:center;
-background:#ffffff10;
-}
-.box h3{font-size:13px;color:#ccc}
-.box p{font-size:22px;font-weight:700;margin-top:8px}
-.table{
-overflow:auto;
-max-height:500px;
-}
+
 table{
 width:100%;
 border-collapse:collapse;
 }
-th,td{
-padding:10px;
-font-size:13px;
-text-align:left;
-border-bottom:1px solid #ffffff15;
+
+th{
+background:#2e1065;
+padding:15px;
 }
-th{color:#c084fc}
-.badge{
-padding:4px 8px;
-border-radius:20px;
-font-size:11px;
-font-weight:700;
+
+td{
+padding:13px;
+border-bottom:1px solid rgba(255,255,255,.06);
 }
-.in{background:#14532d;color:#86efac}
-.out{background:#7f1d1d;color:#fca5a5}
+
+.income{color:#4ade80;font-weight:600;}
+.expense{color:#f87171;font-weight:600;}
+
 .delete{
 background:#dc2626;
-padding:5px 8px;
-border-radius:6px;
-cursor:pointer;
-font-size:11px;
+color:white;
+padding:8px 12px;
+border-radius:8px;
 }
-@media(max-width:900px){
-.grid{grid-template-columns:1fr}
-.summary{grid-template-columns:1fr}
+
+@media(max-width:768px){
+table{font-size:13px;}
 }
+
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
-<div class="title">RK GARAGE • KEUANGAN</div>
+<div class="header">
+<h1>RK GARAGE FINANCE</h1>
+<p>Pencatatan Pemasukan & Pengeluaran Bengkel</p>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Pemasukan</h3>
+<h2 id="totalIncome">Rp0</h2>
+</div>
+
+<div class="card">
+<h3>Total Pengeluaran</h3>
+<h2 id="totalExpense">Rp0</h2>
+</div>
+
+<div class="card">
+<h3>Saldo</h3>
+<h2 id="balance">Rp0</h2>
+</div>
+
+</div>
+
+<div class="form-box">
 
 <div class="grid">
 
-<div class="card">
-<h2>Tambah Transaksi</h2>
-
-<label>Petugas</label>
-<input id="petugas" placeholder="Nama Petugas">
-
-<label>Jenis Transaksi</label>
-<select id="jenis">
+<select id="type">
 <option value="Pemasukan">Pemasukan</option>
 <option value="Pengeluaran">Pengeluaran</option>
 </select>
 
-<label>Kategori</label>
-<select id="kategori">
+<select id="category">
 <option>Service</option>
-<option>Modifikasi</option>
 <option>Sparepart</option>
-<option>Cat</option>
 <option>Operasional</option>
 <option>Gaji</option>
+<option>BBM</option>
 <option>Lainnya</option>
 </select>
 
-<label>Nominal (Rp)</label>
-<input id="nominal" type="number" placeholder="500000">
+<input id="name" placeholder="Nama Pelanggan/Pegawai">
 
-<label>Keterangan</label>
-<textarea id="keterangan" placeholder="Contoh : Service Sultan RS7"></textarea>
+<input id="amount" type="number" placeholder="Nominal">
 
-<button class="btn" onclick="tambah()">+ Simpan Transaksi</button>
-<button class="btn-discord" onclick="kirimDiscord()">Kirim Laporan Discord</button>
 </div>
 
-<div class="card">
-
-<div class="summary">
-<div class="box">
-<h3>Pemasukan</h3>
-<p id="totalIn">Rp0</p>
-</div>
-<div class="box">
-<h3>Pengeluaran</h3>
-<p id="totalOut">Rp0</p>
-</div>
-<div class="box">
-<h3>Saldo</h3>
-<p id="saldo">Rp0</p>
-</div>
+<div style="margin-top:15px;">
+<textarea id="note" rows="3" placeholder="Keterangan"></textarea>
 </div>
 
-<h2>Riwayat Transaksi</h2>
+<div style="margin-top:15px;">
+<button class="btn-add" onclick="addTransaction()">Tambah Transaksi</button>
+</div>
 
-<div class="table">
+</div>
+
+<div class="table-box">
+
 <table>
+
 <thead>
+
 <tr>
 <th>Tanggal</th>
 <th>Jenis</th>
 <th>Kategori</th>
+<th>Nama</th>
 <th>Nominal</th>
-<th>Petugas</th>
-<th></th>
+<th>Aksi</th>
 </tr>
+
 </thead>
-<tbody id="tbody"></tbody>
+
+<tbody id="history"></tbody>
+
 </table>
-</div>
 
 </div>
-</div>
+
 </div>
 
 <script>
-const WEBHOOK_URL="https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-";
 
-let data=JSON.parse(localStorage.getItem("rk_keuangan"))||[];
+const webhook="https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-";
+
+let data=JSON.parse(localStorage.getItem("garageFinance"))||[];
 
 function rupiah(n){
 return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n);
 }
 
-function simpan(){
-localStorage.setItem("rk_keuangan",JSON.stringify(data));
+function save(){
+localStorage.setItem("garageFinance",JSON.stringify(data));
 render();
-}
-
-function tambah(){
-
-const petugas=document.getElementById("petugas").value||"-";
-const jenis=document.getElementById("jenis").value;
-const kategori=document.getElementById("kategori").value;
-const nominal=parseInt(document.getElementById("nominal").value);
-const ket=document.getElementById("keterangan").value||"-";
-
-if(!nominal||nominal<=0){
-alert("Masukkan nominal!");
-return;
-}
-
-data.unshift({
-tanggal:new Date().toLocaleString("id-ID"),
-petugas,jenis,kategori,nominal,ket
-});
-
-document.getElementById("nominal").value="";
-document.getElementById("keterangan").value="";
-
-simpan();
-}
-
-function hapus(i){
-if(confirm("Hapus transaksi?")){
-data.splice(i,1);
-simpan();
-}
 }
 
 function render(){
 
-let pemasukan=0;
-let pengeluaran=0;
-let html="";
+const tbody=document.getElementById("history");
+tbody.innerHTML="";
 
-data.forEach((x,i)=>{
+let income=0;
+let expense=0;
 
-if(x.jenis=="Pemasukan") pemasukan+=x.nominal;
-else pengeluaran+=x.nominal;
+data.forEach((item,index)=>{
 
-html+=`
+if(item.type==="Pemasukan") income+=item.amount;
+else expense+=item.amount;
+
+tbody.innerHTML+=`
 <tr>
-<td>${x.tanggal}</td>
-<td><span class="badge ${x.jenis=="Pemasukan"?"in":"out"}">${x.jenis}</span></td>
-<td>${x.kategori}</td>
-<td>${rupiah(x.nominal)}</td>
-<td>${x.petugas}</td>
-<td><span class="delete" onclick="hapus(${i})">Hapus</span></td>
-</tr>`;
-});
-
-tbody.innerHTML=html;
-totalIn.innerText=rupiah(pemasukan);
-totalOut.innerText=rupiah(pengeluaran);
-saldo.innerText=rupiah(pemasukan-pengeluaran);
-}
-
-async function kirimDiscord(){
-
-if(data.length===0){
-alert("Belum ada transaksi.");
-return;
-}
-
-let pemasukan=0;
-let pengeluaran=0;
-
-let desc="";
-
-data.slice(0,15).forEach(x=>{
-
-if(x.jenis=="Pemasukan") pemasukan+=x.nominal;
-else pengeluaran+=x.nominal;
-
-desc+=`**${x.jenis}** • ${rupiah(x.nominal)}\n`;
-desc+=`> ${x.kategori} | ${x.petugas}\n`;
-desc+=`> ${x.ket}\n\n`;
+<td>${item.date}</td>
+<td class="${item.type==="Pemasukan"?"income":"expense"}">${item.type}</td>
+<td>${item.category}</td>
+<td>${item.name}</td>
+<td>${rupiah(item.amount)}</td>
+<td><button class="delete" onclick="removeItem(${index})">Hapus</button></td>
+</tr>
+`;
 
 });
 
-const embed={
-title:"💰 RK GARAGE • LAPORAN KEUANGAN",
-color:0x9b59b6,
-description:desc,
-fields:[
-{name:"📈 Total Pemasukan",value:rupiah(pemasukan),inline:true},
-{name:"📉 Total Pengeluaran",value:rupiah(pengeluaran),inline:true},
-{name:"💵 Saldo",value:rupiah(pemasukan-pengeluaran),inline:true},
-{name:"📋 Jumlah Transaksi",value:String(data.length),inline:false}
-],
-footer:{
-text:"RK Garage Finance System"
-},
-timestamp:new Date().toISOString()
-};
+document.getElementById("totalIncome").innerText=rupiah(income);
+document.getElementById("totalExpense").innerText=rupiah(expense);
+document.getElementById("balance").innerText=rupiah(income-expense);
 
-try{
+}
 
-const res=await fetch(WEBHOOK_URL,{
+function removeItem(i){
+data.splice(i,1);
+save();
+}
+
+async function sendDiscord(item){
+
+if(webhook==="YOUR_DISCORD_WEBHOOK") return;
+
+const color=item.type==="Pemasukan"?5763719:15548997;
+
+await fetch(webhook,{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
-username:"RK GARAGE FINANCE",
-avatar_url:"https://i.imgur.com/4M34hi2.png",
-embeds:[embed]
+
+username:"RK Garage Finance",
+
+embeds:[{
+
+title:`💰 ${item.type} Baru`,
+
+color:color,
+
+fields:[
+{name:"Kategori",value:item.category,inline:true},
+{name:"Nama",value:item.name||"-",inline:true},
+{name:"Nominal",value:rupiah(item.amount),inline:true},
+{name:"Keterangan",value:item.note||"-"}
+],
+
+footer:{text:item.date}
+
+}]
+
 })
 });
 
-if(res.ok) alert("Berhasil dikirim ke Discord!");
-else alert("Webhook gagal!");
-
-}catch(e){
-alert("Error : "+e);
 }
+
+function addTransaction(){
+
+const item={
+
+type:type.value,
+category:category.value,
+name:name.value||"-",
+amount:Number(amount.value),
+note:note.value||"-",
+date:new Date().toLocaleString("id-ID")
+
+};
+
+if(item.amount<=0){
+alert("Nominal tidak valid.");
+return;
+}
+
+data.unshift(item);
+
+save();
+
+sendDiscord(item);
+
+name.value="";
+amount.value="";
+note.value="";
 
 }
 
 render();
+
 </script>
 
 </body>
