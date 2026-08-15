@@ -2,745 +2,962 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>RK Garage Finance</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
 body{
-background:linear-gradient(135deg,#0b0515,#16092b,#25063f);
-min-height:100vh;
-color:white;
-padding:20px;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top left,#3b0764 0%,transparent 35%),
+        radial-gradient(circle at bottom right,#581c87 0%,transparent 30%),
+        #08050d;
+    color:white;
+    padding:20px;
 }
 
 .container{
-max-width:1200px;
-margin:auto;
+    max-width:1200px;
+    margin:auto;
 }
 
+/* HEADER */
+
 .header{
-text-align:center;
-margin-bottom:25px;
+    text-align:center;
+    margin-bottom:30px;
 }
 
 .header h1{
-font-size:36px;
-background:linear-gradient(90deg,#c084fc,#9333ea,#ec4899);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+    font-size:38px;
+    font-weight:700;
+    background:linear-gradient(
+        90deg,
+        #c084fc,
+        #a855f7,
+        #ec4899
+    );
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
-margin-bottom:20px;
+.header p{
+    color:#c4b5fd;
+    margin-top:5px;
 }
 
-.card{
-background:rgba(255,255,255,.06);
-backdrop-filter:blur(10px);
-padding:18px;
-border-radius:18px;
-border:1px solid rgba(255,255,255,.08);
+/* DASHBOARD */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:20px;
 }
 
-.card h3{font-size:14px;color:#d8b4fe;}
-.card h2{margin-top:8px;}
+.stat{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:22px;
+    backdrop-filter:blur(10px);
+}
+
+.stat-title{
+    color:#c4b5fd;
+    font-size:14px;
+}
+
+.stat-value{
+    font-size:25px;
+    font-weight:700;
+    margin-top:8px;
+}
+
+.income-text{
+    color:#4ade80;
+}
+
+.expense-text{
+    color:#f87171;
+}
+
+.balance-text{
+    color:#c084fc;
+}
+
+/* FORM */
 
 .form-box{
-background:rgba(255,255,255,.05);
-padding:22px;
-border-radius:18px;
-margin-bottom:20px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:22px;
+    margin-bottom:20px;
 }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
+.form-title{
+    font-size:20px;
+    font-weight:600;
+    margin-bottom:18px;
 }
 
-input,select,textarea{
-width:100%;
-padding:12px;
-border:none;
-outline:none;
-border-radius:10px;
-background:#24133d;
-color:white;
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
 }
 
-textarea{resize:none;}
+.input-group{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.input-group label{
+    font-size:13px;
+    color:#c4b5fd;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    border:1px solid rgba(255,255,255,.1);
+    outline:none;
+    border-radius:11px;
+    padding:13px;
+    background:#180d27;
+    color:white;
+    font-size:14px;
+}
+
+input:focus,
+select:focus{
+    border-color:#a855f7;
+}
+
+textarea{
+    resize:none;
+}
+
+.full{
+    grid-column:1 / -1;
+}
+
+/* BUTTON */
+
+.button-area{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+}
 
 button{
-border:none;
-padding:13px;
-border-radius:10px;
-font-weight:600;
-cursor:pointer;
-transition:.2s;
+    border:none;
+    cursor:pointer;
+    border-radius:11px;
+    padding:13px 18px;
+    font-weight:600;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-2px);
 }
 
 .btn-add{
-background:linear-gradient(90deg,#9333ea,#ec4899);
-color:white;
+    background:linear-gradient(
+        90deg,
+        #9333ea,
+        #ec4899
+    );
+    color:white;
+    flex:1;
 }
 
-.btn-add:hover{transform:scale(1.03);}
+.btn-recap{
+    background:#312e81;
+    color:white;
+}
+
+.btn-clear{
+    background:#3f3f46;
+    color:white;
+}
+
+/* TABLE */
 
 .table-box{
-background:rgba(255,255,255,.05);
-border-radius:18px;
-overflow:hidden;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.table-header{
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.table-header h2{
+    font-size:20px;
+}
+
+.table-wrapper{
+    overflow-x:auto;
 }
 
 table{
-width:100%;
-border-collapse:collapse;
+    width:100%;
+    border-collapse:collapse;
+    min-width:850px;
+}
+
+thead{
+    background:#24113d;
 }
 
 th{
-background:#2e1065;
-padding:15px;
+    padding:15px;
+    text-align:left;
+    font-size:13px;
+    color:#d8b4fe;
 }
 
 td{
-padding:13px;
-border-bottom:1px solid rgba(255,255,255,.06);
+    padding:14px 15px;
+    border-top:1px solid rgba(255,255,255,.06);
+    font-size:13px;
 }
 
-.income{color:#4ade80;font-weight:600;}
-.expense{color:#f87171;font-weight:600;}
-
-.delete{
-background:#dc2626;
-color:white;
-padding:8px 12px;
-border-radius:8px;
+.type-income{
+    color:#4ade80;
+    font-weight:600;
 }
 
-@media(max-width:768px){
-table{font-size:13px;}
+.type-expense{
+    color:#f87171;
+    font-weight:600;
+}
+
+.delete-btn{
+    background:#dc2626;
+    color:white;
+    padding:7px 10px;
+    font-size:12px;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#a1a1aa;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:800px){
+
+    body{
+        padding:12px;
+    }
+
+    .header h1{
+        font-size:28px;
+    }
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .button-area{
+        flex-direction:column;
+    }
+
 }
 
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
-<div class="header">
-<h1>RK GARAGE FINANCE</h1>
-<p>Pencatatan Pemasukan & Pengeluaran Bengkel</p>
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>RK GARAGE FINANCE</h1>
+
+        <p>
+            Pencatatan Pemasukan & Pengeluaran Bengkel
+        </p>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <div class="dashboard">
+
+        <div class="stat">
+
+            <div class="stat-title">
+                TOTAL PEMASUKAN
+            </div>
+
+            <div
+                class="stat-value income-text"
+                id="totalIncome"
+            >
+                Rp0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                TOTAL PENGELUARAN
+            </div>
+
+            <div
+                class="stat-value expense-text"
+                id="totalExpense"
+            >
+                Rp0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                SALDO
+            </div>
+
+            <div
+                class="stat-value balance-text"
+                id="balance"
+            >
+                Rp0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FORM -->
+
+    <div class="form-box">
+
+        <div class="form-title">
+            Tambah Transaksi
+        </div>
+
+
+        <div class="form-grid">
+
+            <!-- JENIS -->
+
+            <div class="input-group">
+
+                <label>
+                    Jenis Transaksi
+                </label>
+
+                <select id="type">
+
+                    <option value="Pemasukan">
+                        Pemasukan
+                    </option>
+
+                    <option value="Pengeluaran">
+                        Pengeluaran
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- NAMA -->
+
+            <div class="input-group">
+
+                <label>
+                    Nama
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Masukkan nama"
+                >
+
+            </div>
+
+
+            <!-- NOMINAL -->
+
+            <div class="input-group">
+
+                <label>
+                    Nominal
+                </label>
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="Contoh: 500000"
+                    min="1"
+                >
+
+            </div>
+
+
+            <!-- KETERANGAN -->
+
+            <div class="input-group">
+
+                <label>
+                    Keterangan
+                </label>
+
+                <select id="note">
+
+                    <option value="">
+                        Pilih Keterangan
+                    </option>
+
+                    <option value="Restock Gold">
+                        Restock Gold
+                    </option>
+
+                    <option value="Restock Makanan">
+                        Restock Makanan
+                    </option>
+
+                    <option value="Restock Coklat">
+                        Restock Coklat
+                    </option>
+
+                    <option value="Restock Bahan Crafting">
+                        Restock Bahan Crafting
+                    </option>
+
+                    <option value="Restock Kepolisian">
+                        Restock Kepolisian
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="button-area">
+
+            <button
+                class="btn-add"
+                onclick="addTransaction()"
+            >
+                + Tambah Transaksi
+            </button>
+
+            <button
+                class="btn-recap"
+                onclick="sendRecap()"
+            >
+                📊 Kirim Rekap Discord
+            </button>
+
+            <button
+                class="btn-clear"
+                onclick="clearAll()"
+            >
+                🗑 Hapus Semua
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-box">
+
+        <div class="table-header">
+
+            <h2>
+                Riwayat Transaksi
+            </h2>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            TANGGAL
+                        </th>
+
+                        <th>
+                            NAMA
+                        </th>
+
+                        <th>
+                            JENIS
+                        </th>
+
+                        <th>
+                            KETERANGAN
+                        </th>
+
+                        <th>
+                            NOMINAL
+                        </th>
+
+                        <th>
+                            AKSI
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="history">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="cards">
-
-<div class="card">
-<h3>Total Pemasukan</h3>
-<h2 id="totalIncome">Rp0</h2>
-</div>
-
-<div class="card">
-<h3>Total Pengeluaran</h3>
-<h2 id="totalExpense">Rp0</h2>
-</div>
-
-<div class="card">
-<h3>Saldo</h3>
-<h2 id="balance">Rp0</h2>
-</div>
-
-</div>
-
-<div class="form-box">
-
-<div class="grid">
-
-<select id="type">
-<option value="Pemasukan">Pemasukan</option>
-<option value="Pengeluaran">Pengeluaran</option>
-</select>
-
-<select id="category">
-<option>Service</option>
-<option>Sparepart</option>
-<option>Operasional</option>
-<option>Gaji</option>
-<option>BBM</option>
-<option>Lainnya</option>
-</select>
-
-<input id="name" placeholder="Nama Pelanggan/Pegawai">
-
-<input id="amount" type="number" placeholder="Nominal">
-
-</div>
-
-<div style="margin-top:15px;">
-<textarea id="note" rows="3" placeholder="Keterangan"></textarea>
-</div>
-
-<div style="margin-top:15px;">
-<button class="btn-add" onclick="addTransaction()">Tambah Transaksi</button>
-</div>
-
-</div>
-
-<div class="table-box">
-
-<table>
-
-<thead>
-
-<tr>
-<th>Tanggal</th>
-<th>Jenis</th>
-<th>Kategori</th>
-<th>Nama</th>
-<th>Nominal</th>
-<th>Aksi</th>
-</tr>
-
-</thead>
-
-<tbody id="history"></tbody>
-
-</table>
-
-</div>
-
-</div>
 
 <script>
 
-const webhook = "https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-";
+/* =========================================
+   DISCORD WEBHOOK
+========================================= */
 
-let data = JSON.parse(localStorage.getItem("garageFinance")) || [];
+const webhook =
+"https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-";
 
-/* =========================
+
+/* =========================================
+   DATABASE LOCAL STORAGE
+========================================= */
+
+let data =
+JSON.parse(
+    localStorage.getItem("garageFinance")
+) || [];
+
+
+/* =========================================
    FORMAT RUPIAH
-========================= */
+========================================= */
 
-function rupiah(n){
-    return new Intl.NumberFormat("id-ID", {
-        style:"currency",
-        currency:"IDR",
-        maximumFractionDigits:0
-    }).format(Number(n) || 0);
+function rupiah(number){
+
+    return new Intl.NumberFormat(
+        "id-ID",
+        {
+            style:"currency",
+            currency:"IDR",
+            maximumFractionDigits:0
+        }
+    ).format(number || 0);
+
 }
 
 
-/* =========================
+/* =========================================
    SIMPAN DATA
-========================= */
+========================================= */
 
-function save(){
-    localStorage.setItem("garageFinance", JSON.stringify(data));
-    render();
+function saveData(){
+
+    localStorage.setItem(
+        "garageFinance",
+        JSON.stringify(data)
+    );
+
 }
 
 
-/* =========================
-   RENDER DATA
-========================= */
+/* =========================================
+   RENDER
+========================================= */
 
 function render(){
 
-    const tbody = document.getElementById("history");
+    const history =
+        document.getElementById("history");
 
-    tbody.innerHTML = "";
+    history.innerHTML = "";
 
     let income = 0;
     let expense = 0;
 
+
+    if(data.length === 0){
+
+        history.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    class="empty"
+                >
+                    Belum ada transaksi
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+
     data.forEach((item,index)=>{
 
-        const amount = Number(item.amount) || 0;
-
         if(item.type === "Pemasukan"){
-            income += amount;
+
+            income += Number(item.amount);
+
         }else{
-            expense += amount;
+
+            expense += Number(item.amount);
+
         }
 
-        tbody.innerHTML += `
-        <tr>
 
-            <td>${item.date || "-"}</td>
+        history.innerHTML += `
 
-            <td class="${item.type === "Pemasukan" ? "income" : "expense"}">
-                ${item.type || "-"}
-            </td>
+            <tr>
 
-            <td>${item.category || "-"}</td>
+                <td>
+                    ${item.date}
+                </td>
 
-            <td>
-                <strong>${item.name || "-"}</strong>
-            </td>
+                <td>
+                    <strong>
+                        ${escapeHTML(item.name)}
+                    </strong>
+                </td>
 
-            <td>
-                ${rupiah(amount)}
-            </td>
+                <td
+                    class="${
+                        item.type === "Pemasukan"
+                        ? "type-income"
+                        : "type-expense"
+                    }"
+                >
+                    ${item.type}
+                </td>
 
-            <td>
-                <button class="delete" onclick="removeItem(${index})">
-                    Hapus
-                </button>
-            </td>
+                <td>
+                    ${item.note}
+                </td>
 
-        </tr>
+                <td>
+                    ${rupiah(item.amount)}
+                </td>
+
+                <td>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteTransaction(${index})"
+                    >
+                        Hapus
+                    </button>
+
+                </td>
+
+            </tr>
+
         `;
 
     });
 
-    document.getElementById("totalIncome").innerText = rupiah(income);
 
-    document.getElementById("totalExpense").innerText = rupiah(expense);
-
-    document.getElementById("balance").innerText = rupiah(income - expense);
-
-}
+    document.getElementById(
+        "totalIncome"
+    ).innerText = rupiah(income);
 
 
-/* =========================
-   HAPUS DATA
-========================= */
+    document.getElementById(
+        "totalExpense"
+    ).innerText = rupiah(expense);
 
-function removeItem(index){
 
-    if(!confirm("Hapus transaksi ini?")){
-        return;
-    }
-
-    data.splice(index,1);
-
-    save();
+    document.getElementById(
+        "balance"
+    ).innerText = rupiah(
+        income - expense
+    );
 
 }
 
 
-/* =========================
+/* =========================================
    TAMBAH TRANSAKSI
-========================= */
+========================================= */
 
-function addTransaction(){
+async function addTransaction(){
 
-    const selectedType =
+    const type =
         document.getElementById("type").value;
 
-    const selectedCategory =
-        document.getElementById("category").value;
+    const name =
+        document.getElementById("name")
+        .value
+        .trim();
 
-    const customerName =
-        document.getElementById("name").value.trim();
+    const amount =
+        Number(
+            document.getElementById("amount").value
+        );
 
-    const amountValue =
-        Number(document.getElementById("amount").value);
-
-    const noteValue =
-        document.getElementById("note").value.trim();
+    const note =
+        document.getElementById("note").value;
 
 
-    if(!customerName){
+    /* VALIDASI */
+
+    if(!name){
 
         alert("Nama wajib diisi!");
 
-        document.getElementById("name").focus();
-
         return;
+
     }
 
 
-    if(!amountValue || amountValue <= 0){
+    if(!amount || amount <= 0){
 
-        alert("Nominal tidak valid!");
-
-        document.getElementById("amount").focus();
+        alert("Nominal wajib diisi!");
 
         return;
+
     }
 
 
-    const item = {
+    if(!note){
 
-        id: Date.now(),
+        alert("Silakan pilih keterangan!");
 
-        type: selectedType,
+        return;
 
-        category: selectedCategory,
+    }
 
-        // NAMA DARI INPUT
-        name: customerName,
 
-        amount: amountValue,
+    /* DATA */
 
-        note: noteValue || "-",
+    const transaction = {
 
-        date: new Date().toLocaleString("id-ID")
+        id:Date.now(),
+
+        date:new Date()
+            .toLocaleString("id-ID"),
+
+        name:name,
+
+        type:type,
+
+        note:note,
+
+        amount:amount
 
     };
 
 
-    // Simpan ke tabel
-    data.unshift(item);
+    /* SIMPAN */
 
-    save();
+    data.unshift(transaction);
+
+    saveData();
+
+    render();
 
 
-    // Kirim data yang sama ke Discord
-    sendDiscord(item);
+    /* KIRIM KE DISCORD */
+
+    await sendTransactionToDiscord(
+        transaction
+    );
 
 
-    // Bersihkan form
-    document.getElementById("name").value = "";
+    /* RESET */
 
-    document.getElementById("amount").value = "";
+    document.getElementById(
+        "name"
+    ).value = "";
 
-    document.getElementById("note").value = "";
+    document.getElementById(
+        "amount"
+    ).value = "";
+
+    document.getElementById(
+        "note"
+    ).value = "";
 
 }
 
 
-/* =========================
+/* =========================================
    KIRIM TRANSAKSI KE DISCORD
-========================= */
+========================================= */
 
-async function sendDiscord(item){
-
-    if(
-        !webhook ||
-        webhook === "https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-"
-    ){
-        console.warn("Discord Webhook belum diatur.");
-        return;
-    }
-
-    // Ambil nama langsung dari data transaksi
-    const nama = item.name && item.name.trim()
-        ? item.name.trim()
-        : "-";
-
-    const jenis = item.type || "-";
-    const kategori = item.category || "-";
-    const nominal = Number(item.amount) || 0;
-    const keterangan = item.note || "-";
-    const tanggal = item.date || "-";
-
-    const isIncome = jenis === "Pemasukan";
-
-    const payload = {
-
-        username: "RK Garage Finance",
-
-        embeds: [
-
-            {
-                title: isIncome
-                    ? "💰 PEMASUKAN BARU"
-                    : "💸 PENGELUARAN BARU",
-
-                color: isIncome
-                    ? 5763719
-                    : 15548997,
-
-                fields: [
-
-                    {
-                        name: "👤 NAMA",
-                        value: `**${nama}**`,
-                        inline: true
-                    },
-
-                    {
-                        name: "📌 JENIS",
-                        value: jenis,
-                        inline: true
-                    },
-
-                    {
-                        name: "📁 KATEGORI",
-                        value: kategori,
-                        inline: true
-                    },
-
-                    {
-                        name: "💵 NOMINAL",
-                        value: `**${rupiah(nominal)}**`,
-                        inline: true
-                    },
-
-                    {
-                        name: "📝 KETERANGAN",
-                        value: keterangan,
-                        inline: false
-                    },
-
-                    {
-                        name: "📅 TANGGAL",
-                        value: tanggal,
-                        inline: false
-                    }
-
-                ],
-
-                footer: {
-                    text: "RK Garage Finance • Data diambil dari tabel transaksi"
-                },
-
-                timestamp: new Date().toISOString()
-
-            }
-
-        ]
-
-    };
-
-    try{
-
-        const response = await fetch(webhook, {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify(payload)
-
-        });
-
-        if(!response.ok){
-
-            const errorText = await response.text();
-
-            console.error(
-                "Discord Error:",
-                response.status,
-                errorText
-            );
-
-            alert(
-                "Transaksi tersimpan, tetapi gagal mengirim ke Discord."
-            );
-
-            return;
-        }
-
-        console.log(
-            "Transaksi berhasil dikirim ke Discord:",
-            nama
-        );
-
-    }catch(error){
-
-        console.error(
-            "Webhook Error:",
-            error
-        );
-
-        alert(
-            "Transaksi tersimpan, tetapi Discord tidak dapat dihubungi."
-        );
-
-    }
-
-}
-
-
-/* =========================
-   KIRIM REKAP KE DISCORD
-========================= */
-
-async function sendRecap(){
+async function sendTransactionToDiscord(item){
 
     if(
         !webhook ||
         webhook === "https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-"
     ){
 
-        alert("Masukkan Discord Webhook terlebih dahulu.");
+        console.warn(
+            "Webhook Discord belum diatur."
+        );
 
         return;
-    }
-
-
-    if(data.length === 0){
-
-        alert("Belum ada transaksi.");
-
-        return;
-    }
-
-
-    let totalIncome = 0;
-    let totalExpense = 0;
-
-
-    let incomeText = "";
-    let expenseText = "";
-
-
-    data.forEach((item,index)=>{
-
-        const amount = Number(item.amount) || 0;
-
-        if(item.type === "Pemasukan"){
-
-            totalIncome += amount;
-
-            incomeText +=
-                `**${index + 1}. ${item.name || "-"}**\n` +
-                `Kategori: ${item.category || "-"}\n` +
-                `Nominal: ${rupiah(amount)}\n` +
-                `Keterangan: ${item.note || "-"}\n\n`;
-
-        }else{
-
-            totalExpense += amount;
-
-            expenseText +=
-                `**${index + 1}. ${item.name || "-"}**\n` +
-                `Kategori: ${item.category || "-"}\n` +
-                `Nominal: ${rupiah(amount)}\n` +
-                `Keterangan: ${item.note || "-"}\n\n`;
-
-        }
-
-    });
-
-
-    const balance =
-        totalIncome - totalExpense;
-
-
-    const embeds = [];
-
-
-    /* REKAP PEMASUKAN */
-
-    if(incomeText){
-
-        embeds.push({
-
-            title:"💰 REKAP PEMASUKAN",
-
-            color:5763719,
-
-            description:incomeText.substring(0,4096),
-
-            fields:[
-
-                {
-                    name:"Total Pemasukan",
-                    value:rupiah(totalIncome),
-                    inline:true
-                }
-
-            ]
-
-        });
 
     }
 
 
-    /* REKAP PENGELUARAN */
-
-    if(expenseText){
-
-        embeds.push({
-
-            title:"💸 REKAP PENGELUARAN",
-
-            color:15548997,
-
-            description:expenseText.substring(0,4096),
-
-            fields:[
-
-                {
-                    name:"Total Pengeluaran",
-                    value:rupiah(totalExpense),
-                    inline:true
-                }
-
-            ]
-
-        });
-
-    }
+    const isIncome =
+        item.type === "Pemasukan";
 
 
-    /* RINGKASAN */
+    const embed = {
 
-    embeds.push({
+        title:
+            isIncome
+            ? "💰 PEMASUKAN BARU"
+            : "💸 PENGELUARAN BARU",
 
-        title:"📊 RINGKASAN KEUANGAN",
-
-        color:10181046,
+        color:
+            isIncome
+            ? 5763719
+            : 15548997,
 
         fields:[
 
             {
-                name:"💰 Pemasukan",
-                value:rupiah(totalIncome),
+                name:"👤 Nama",
+                value:
+                    `**${item.name}**`,
                 inline:true
             },
 
             {
-                name:"💸 Pengeluaran",
-                value:rupiah(totalExpense),
+                name:"📌 Jenis",
+                value:
+                    item.type,
                 inline:true
             },
 
             {
-                name:"💵 Saldo",
-                value:rupiah(balance),
+                name:"💵 Nominal",
+                value:
+                    `**${rupiah(item.amount)}**`,
                 inline:true
             },
 
             {
-                name:"📋 Total Transaksi",
-                value:String(data.length),
-                inline:true
+                name:"📝 Keterangan",
+                value:
+                    item.note,
+                inline:false
+            },
+
+            {
+                name:"📅 Waktu",
+                value:
+                    item.date,
+                inline:false
             }
 
         ],
 
         footer:{
-            text:"RK Garage Finance"
+            text:
+                "RK Garage Finance"
         },
 
-        timestamp:new Date().toISOString()
+        timestamp:
+            new Date().toISOString()
 
-    });
+    };
 
 
     try{
 
-        const response = await fetch(webhook,{
+        const response =
+            await fetch(
+                webhook,
+                {
 
-            method:"POST",
+                    method:"POST",
 
-            headers:{
-                "Content-Type":"application/json"
-            },
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
 
-            body:JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                username:"RK Garage Finance",
+                            username:
+                                "RK Garage Finance",
 
-                embeds:embeds
+                            embeds:[
+                                embed
+                            ]
 
-            })
+                        })
 
-        });
+                }
+            );
 
 
         if(!response.ok){
@@ -750,16 +967,194 @@ async function sendRecap(){
             );
 
             alert(
-                "Gagal mengirim rekap ke Discord."
+                "Data tersimpan, tetapi gagal dikirim ke Discord."
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Data tersimpan, tetapi Discord tidak dapat dihubungi."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   KIRIM REKAP
+========================================= */
+
+async function sendRecap(){
+
+    if(
+        !webhook ||
+        webhook === "https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-"
+    ){
+
+        alert(
+            "Masukkan Discord Webhook terlebih dahulu."
+        );
+
+        return;
+
+    }
+
+
+    if(data.length === 0){
+
+        alert(
+            "Belum ada transaksi."
+        );
+
+        return;
+
+    }
+
+
+    let income = 0;
+    let expense = 0;
+
+    let transactionList = "";
+
+
+    data.forEach((item,index)=>{
+
+        const amount =
+            Number(item.amount) || 0;
+
+
+        if(item.type === "Pemasukan"){
+
+            income += amount;
+
+        }else{
+
+            expense += amount;
+
+        }
+
+
+        transactionList +=
+
+            `**${index + 1}. ${item.name}**\n` +
+
+            `> Jenis: ${item.type}\n` +
+
+            `> Keterangan: ${item.note}\n` +
+
+            `> Nominal: ${rupiah(amount)}\n` +
+
+            `> Waktu: ${item.date}\n\n`;
+
+    });
+
+
+    const balance =
+        income - expense;
+
+
+    const embed = {
+
+        title:
+            "📊 REKAP KEUANGAN BENGKEL",
+
+        color:
+            10181046,
+
+        fields:[
+
+            {
+                name:"💰 Total Pemasukan",
+                value:
+                    `**${rupiah(income)}**`,
+                inline:true
+            },
+
+            {
+                name:"💸 Total Pengeluaran",
+                value:
+                    `**${rupiah(expense)}**`,
+                inline:true
+            },
+
+            {
+                name:"💵 Saldo",
+                value:
+                    `**${rupiah(balance)}**`,
+                inline:true
+            }
+
+        ],
+
+        description:
+            "### 📋 Daftar Transaksi\n\n" +
+            transactionList,
+
+        footer:{
+            text:
+                `Total ${data.length} transaksi • RK Garage Finance`
+        },
+
+        timestamp:
+            new Date().toISOString()
+
+    };
+
+
+    try{
+
+        const response =
+            await fetch(
+                webhook,
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            username:
+                                "RK Garage Finance",
+
+                            embeds:[
+                                embed
+                            ]
+
+                        })
+
+                }
+            );
+
+
+        if(!response.ok){
+
+            console.error(
+                await response.text()
+            );
+
+            alert(
+                "Gagal mengirim rekap."
             );
 
             return;
+
         }
 
 
         alert(
             "Rekap berhasil dikirim ke Discord!"
         );
+
 
     }catch(error){
 
@@ -774,9 +1169,84 @@ async function sendRecap(){
 }
 
 
-/* =========================
-   LOAD DATA
-========================= */
+/* =========================================
+   HAPUS TRANSAKSI
+========================================= */
+
+function deleteTransaction(index){
+
+    if(
+        !confirm(
+            "Apakah kamu yakin ingin menghapus transaksi ini?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    data.splice(index,1);
+
+    saveData();
+
+    render();
+
+}
+
+
+/* =========================================
+   HAPUS SEMUA
+========================================= */
+
+function clearAll(){
+
+    if(data.length === 0){
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Hapus SEMUA data transaksi?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    data = [];
+
+    saveData();
+
+    render();
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
+   LOAD
+========================================= */
 
 render();
 
