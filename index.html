@@ -850,15 +850,9 @@ async function addTransaction(){
 
 async function sendTransactionToDiscord(item){
 
-    if(
-        !webhook ||
-        webhook === "https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-"
-    ){
+    if(!webhook){
 
-        console.warn(
-            "Webhook Discord belum diatur."
-        );
-
+        console.warn("Webhook Discord belum diatur.");
         return;
 
     }
@@ -962,15 +956,20 @@ async function sendTransactionToDiscord(item){
 
         if(!response.ok){
 
-            console.error(
-                await response.text()
-            );
+            const errorText = await response.text();
+
+            console.error("Discord HTTP", response.status, errorText);
 
             alert(
-                "Data tersimpan, tetapi gagal dikirim ke Discord."
+                `Data tersimpan, tetapi gagal dikirim ke Discord.\\nHTTP ${response.status}`
             );
 
+            return false;
+
         }
+
+        console.log("Transaksi berhasil dikirim ke Discord.");
+        return true;
 
     }catch(error){
 
@@ -991,15 +990,9 @@ async function sendTransactionToDiscord(item){
 
 async function sendRecap(){
 
-    if(
-        !webhook ||
-        webhook === "https://discord.com/api/webhooks/1532706114184020058/QBK_ct9S01OF1wWb7vyqM-wWekDvLFLCw0J1RpZMZPtiwq303uuv8_6CsQ8G5yVX7HK-"
-    ){
+    if(!webhook){
 
-        alert(
-            "Masukkan Discord Webhook terlebih dahulu."
-        );
-
+        alert("Masukkan Discord Webhook terlebih dahulu.");
         return;
 
     }
@@ -1138,22 +1131,19 @@ async function sendRecap(){
 
         if(!response.ok){
 
-            console.error(
-                await response.text()
-            );
+            const errorText = await response.text();
+
+            console.error("Discord HTTP", response.status, errorText);
 
             alert(
-                "Gagal mengirim rekap."
+                `Gagal mengirim rekap.\\nHTTP ${response.status}`
             );
 
             return;
 
         }
 
-
-        alert(
-            "Rekap berhasil dikirim ke Discord!"
-        );
+        alert("Rekap berhasil dikirim ke Discord!");
 
 
     }catch(error){
